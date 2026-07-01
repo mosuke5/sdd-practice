@@ -27,18 +27,10 @@ flowchart TB
     Browser[ブラウザ]
   end
 
-  subgraph frontend_repo [workflow-frontend]
-    Nuxt[Nuxt 4 / Vue 3]
-  end
-
-  subgraph backend_repo [workflow-backend]
-  API[Spring Boot 3.5 API]
-  end
-
   subgraph infra [OpenShift]
     Route[Route / Ingress]
-    FE_Pod[Frontend Pod]
-    BE_Pod[Backend Pod]
+    FE_Pod["Frontend Pod（Nuxt4/Vue3）"]
+    BE_Pod["Backend Pod（Spring Boot 3.5）"]
     DB[(PostgreSQL)]
     Mail[メール送信]
     Storage[オブジェクトストレージ]
@@ -46,9 +38,7 @@ flowchart TB
 
   Browser --> Route
   Route --> FE_Pod
-  Nuxt -.->|ビルド・デプロイ| FE_Pod
-  Browser -->|API 呼び出し| BE_Pod
-  API -.->|ビルド・デプロイ| BE_Pod
+  Route -->|API 呼び出し| BE_Pod
   BE_Pod --> DB
   BE_Pod --> Mail
   BE_Pod --> Storage
